@@ -1236,6 +1236,14 @@ def : ProcessorModel<"carmel", NoSchedModel, ProcessorFeatures.Carmel,
 def : ProcessorModel<"ampere1", Ampere1Model, ProcessorFeatures.Ampere1,
                      [TuneAmpere1]>;
 
+def ProcDemo : SubtargetFeature<"demo", "ARMProcFamily", "Others",
+                                "Demo ARM processors",
+								[FeatureFPARMv8,
+								FeatureNEON,
+								FeatureCrypto,
+								FeatureCRC]>;
+def : ProcessorModel<"demo", NoSchedModel, [ProcDemo]>;
+
 //===----------------------------------------------------------------------===//
 // Assembly parser
 //===----------------------------------------------------------------------===//
