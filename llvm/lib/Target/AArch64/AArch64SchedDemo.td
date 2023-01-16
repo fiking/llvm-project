@@ -1,7 +1,7 @@
 def DemoModel : SchedMachineModel {
   let MicroOpBufferSize = 0; // Explicitly set to zero since Demo is in-order.
   let IssueWidth = 3;        // 3 instructions are dispatched per cycle.
-  let MinLatency = 1 ;       // OperandCycles are interpreted as MinLatency.
+//  let MinLatency = 1;        // OperandCycles are interpreted as MinLatency.
   let LoadLatency = 3;       // Optimistic load latency assuming bypass.
                              // This is overriden by OperandCycles if the
                              // Itineraries are queried instead.
@@ -76,7 +76,8 @@ def : WriteRes<WriteFCmp,  [DemoUnitFPALU]>;
 def : WriteRes<WriteFCvt,  [DemoUnitFPALU]>;
 def : WriteRes<WriteFCopy, [DemoUnitFPALU]>;
 def : WriteRes<WriteFImm,  [DemoUnitFPALU]>;
-def : WriteRes<WriteV,     [DemoUnitFPALU]>;
+def : WriteRes<WriteVq,     [DemoUnitFPALU]>;
+def : WriteRes<WriteVd,     [DemoUnitFPALU]>;
 def : WriteRes<WriteFMul,  [DemoUnitFPDS]>;
 }
 
@@ -84,6 +85,9 @@ def : WriteRes<WriteFMul,  [DemoUnitFPDS]>;
 let Latency = 15 in {
 def : WriteRes<WriteFDiv, [DemoUnitFPDS]>;
 }
+
+// These WriteRes entries are not used in the Demo sched model.
+def : WriteRes<WriteAtomic, []> { let Unsupported = 1; }
 
 // No forwarding for these reads.
 def : ReadAdvance<ReadExtrHi, 0>;
@@ -95,5 +99,9 @@ def : ReadAdvance<ReadIEReg, 0>;
 def : ReadAdvance<ReadIM, 0>;
 def : ReadAdvance<ReadIMA, 0>;
 def : ReadAdvance<ReadID, 0>;
+def : ReadAdvance<ReadST, 0>;
 
+// Example InstRW refinements
+def : InstRW<[WriteI], (instrs COPY)>;
+def : InstRW<[WriteFDiv], (instregex "FDIV.*")>;
 }

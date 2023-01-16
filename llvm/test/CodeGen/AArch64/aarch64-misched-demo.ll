@@ -1,5 +1,5 @@
 ; REQUIRES: asserts
-; RUN: llc < %s -mtriple=arm64-linux-gnu -mcpu=demo -pre-RA-sched=source -enable-misched -verify-misched -debug-only=machine-schedule -o - 2>&1 > /dev/null | FileCheck %s
+; RUN: llc < %s -mtriple=arm64-linux-gnu -mcpu=demo -pre-RA-sched=source -enable-misched -verify-misched -debug-only=machine-scheduler -o - 2>&1 > /dev/null | FileCheck %s
 ;
 ; The Cortex-A53 machine model will cause the FDIVvvv_42 to be raised to
 ; hide latency. Whereas normally there would only be a single FADDvvv_4s

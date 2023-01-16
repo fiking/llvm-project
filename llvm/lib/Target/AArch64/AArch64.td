@@ -1236,13 +1236,14 @@ def : ProcessorModel<"carmel", NoSchedModel, ProcessorFeatures.Carmel,
 def : ProcessorModel<"ampere1", Ampere1Model, ProcessorFeatures.Ampere1,
                      [TuneAmpere1]>;
 
+include "AArch64SchedDemo.td"
 def ProcDemo : SubtargetFeature<"demo", "ARMProcFamily", "Others",
                                 "Demo ARM processors",
 								[FeatureFPARMv8,
 								FeatureNEON,
 								FeatureCrypto,
 								FeatureCRC]>;
-def : ProcessorModel<"demo", NoSchedModel, [ProcDemo]>;
+def : ProcessorModel<"demo", DemoModel, [ProcDemo]>;
 
 //===----------------------------------------------------------------------===//
 // Assembly parser
